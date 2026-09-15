@@ -3,130 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Excel CV to PDF Converter</title>
-  
-  <!-- SheetJS: Parses Excel (.xlsx) files -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- html2pdf.js: Converts HTML preview to downloadable PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
+  <title>Exact Excel CV to PDF Converter</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background-color: #f4f6f8;
-      color: #333;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      background: white;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .controls {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8f9fa;
       display: flex;
-      gap: 15px;
-      margin-bottom: 20px;
+      justify-content: center;
       align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    input[type="file"] {
-      padding: 8px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    #preview {
-      margin-top: 20px;
-      padding: 20px;
-      background: white;
-      border: 1px solid #ddd;
-    }
-    /* Style converted Excel tables nicely */
-    table {
+    .card {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 500px;
       width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: left;
+    h2 { margin-bottom: 8px; color: #1a1a1a; }
+    p { color: #666; font-size: 14px; margin-bottom: 24px; }
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h2>Excel CV to PDF Converter</h2>
-  <div class="controls">
-    <input type="file" id="excelFile" accept=".xlsx, .xls" />
-    <button id="downloadBtn" onclick="downloadPDF()" disabled>Download PDF</button>
-  </div>
-
-  <h3>Preview:</h3>
-  <div id="preview">
-    <p style="color: #777;">Upload an Excel file to see preview...</p>
-  </div>
+<div class="card">
+  <h2>Exact Excel CV to PDF</h2>
+  <p>Upload your Excel file below to preserve 100% of formatting, columns, and grid alignment.</p>
+  
+  <!-- Embedded High-Precision Converter Engine -->
+  <iframe 
+    src="https://mini.pdf24.org/excel-to-pdf" 
+    title="Excel to PDF Converter">
+  </iframe>
 </div>
-
-<script>
-  let currentFileName = "CV.pdf";
-
-  document.getElementById('excelFile').addEventListener('change', function (e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    currentFileName = file.name.replace(/\.[^/.]+$/, "") + ".pdf";
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      
-      // Get the first sheet in Excel
-      const firstSheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[firstSheetName];
-
-      // Convert Sheet to HTML table
-      const htmlString = XLSX.utils.sheet_to_html(worksheet);
-
-      // Render inside preview box
-      const previewDiv = document.getElementById('preview');
-      previewDiv.innerHTML = htmlString;
-
-      // Enable PDF download button
-      document.getElementById('downloadBtn').disabled = false;
-    };
-
-    reader.readAsArrayBuffer(file);
-  });
-
-  function downloadPDF() {
-    const element = document.getElementById('preview');
-    const opt = {
-      margin:       0.5,
-      filename:     currentFileName,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2 },
-      jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    // Download PDF directly
-    html2pdf().set(opt).from(element).save();
-  }
-</script>
 
 </body>
 </html>
